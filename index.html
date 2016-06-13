@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>B&amp;F Bicentennial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="bfdemo.css" >
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/slick-carousel/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="bower_components/slick-carousel/slick/slick-theme.css"/>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css">
+  <link rel="stylesheet" href="easy-button.css" >
+
+  
+<!--  <style>
+    html,body{
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #mymap {
+      height: 100%;
+    }
+    
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }
+    .legend i {
+        width: 28px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+    img.centered {
+        display: block;
+        margin-left: auto;
+        margin-right: auto 
+    }
+    span.centered {
+      display: block;
+      margin-left: auto;
+      margin-right:;
+    }
+  </style> -->
+</head>
+<body>
+  <h1>B&amp;F Bicentennial</h1>
+
+  <div id="mymap"></div>
+
+  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+  <script src="bf_locations.js"></script>   <!-- Defines the venueData[] array with list of locations and their description. -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>
+  <script src="easy-button.js"></script>
+  <script src="leaflet-track-draw.js"></script>
+  <!-- <script language="javascript" src="test.js"></script> -->
+
+
+  <script type="text/javascript">
+    //$("#testModal").modal({show:false}); 
+    // Need to get an access token of our own.  
+    var leafletAccessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw';
+    // The ID names the map source and type.  
+    var mapID = 'mapbox.light';
+    
+
+    // Create two base layers, and put them into a group, which we will pass the the L.control.layers() function.
+    // Since we are creating two layers to toggle between, don't set a base layer on instantiation.  (id: attribute) 
+    // The layer selection control also defaults to the topright position, so we make sure our other control is out of the way.  
+    var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + leafletAccessToken;
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmHotUrl = 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+    var esriUrl = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
+
+    var theAttrib = 'University of Michigan';
+
+    var grayscale = L.tileLayer( mbUrl, {id: 'mapbox.light', attribution: theAttrib}),
+        streets   = L.tileLayer( mbUrl, {id: 'mapbox.streets', attribution: theAttrib});
+    var osmStreets = L.tileLayer( osmUrl, { type: 'xyz', attribution: theAttrib}),
+        osmHot     = L.tileLayer( osmHotUrl, { type: 'xyz', attribution: theAttrib}),
+        esriStreets = L.tileLayer( esriUrl, { type: 'xyz', attribution: theAttrib}); 
+
+    // Markers for staff stories
+    var poolHall = L.marker([42.275149,-83.741515])
+          .bindPopup('Michigan Union, Pool Hall:'+'<a href="#" data-toggle="modal" data-target="#poolHallMod"><br>Reflections on George Thomas O’Neal</a>'),
+        inglisHouse = L.marker([42.277837,-83.717012]).bindPopup('Inglis House:' + '<a href="#" data-toggle="modal" data-target="#inglisMod"><br>Activist Anarchist Archivist</a>'),
+        adminBuilding = L.marker([42.276248,-83.741242]).bindPopup('LS&A Building:'+ '<a href="#" data-toggle="modal" data-target="#LSAMod"><br>A Loving Legacy of Stewardship</a>'),
+        kelseyMuseum = L.marker([42.276722,-83.741392]).bindPopup('Kelsey Museum of Archaeology:' + '<a href="#" data-toggle="modal" data-target="#KelseyMod"><br>Poet, Teacher, Adventurer and Photographer</a>'),
+        bentleyLib = L.marker([42.289588,-83.712220]).bindPopup('University of Michigan Libraries and Bentley Historical Library:'+'<a href="#" data-toggle="modal" data-target="#BookBindMod"><br>Father and Son Bookbinders</a>'),
+        exhibitMuseum = L.marker([42.278184,-83.734389]).bindPopup('Exhibit Museum:'+'<a href="#" data-toggle="modal" data-target="#AuntRuthMod"><br>Becoming Aunt Ruth</a>'),
+        powerPlant = L.marker([42.280941,-83.734526]).bindPopup('Power Plant:'+'<a href="#" data-toggle="modal" data-target="#PowerPlantMod"><br>Power to the People</a>'),
+        oldMain = L.marker([42.282845,-83.730983]).bindPopup('Old Main Hospital:'+'<a href="#" data-toggle="modal" data-target="#OldMainMod"><br>Bringing Down Old Main</a>'),
+        railroad = L.marker([42.287207,-83.741678]).bindPopup('University of Michigan Railroad:'+'<a href="#" data-toggle="modal" data-target="#railroadMod"><br>The Last Engineer</a>'),
+        medSchool = L.marker([42.283214,-83.733599]).bindPopup('Anatomy Labs:'+'<a href="#" data-toggle="modal" data-target="#hospitalMod"><br>Anatomist and Janitor</a>'); 
+
+
+    var theMap = L.map( 'mymap', {
+      center: [42.27816, -83.73822],
+      zoom: 16,
+      layers: [grayscale]
+    });
+
+    // Add a control that shows state info on hover.  The position of a Control is set by a Leaflet property: position:
+    //  bottomleft, bottomright, topright and topleft??  What about the default +/- buttons there for zoom?  
+    // The size of the control is dynamically determined, and adjusts as needed to hold content inserted.  
+    
+    var info = L.control( {position: 'bottomleft'} );
+
+    info.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'info');
+      this.update();
+      return this._div;
+    };
+
+    info.update = function (props) {
+      this._div.innerHTML = '<h4>B&amp;F Bicentennial</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + props.description 
+        : 'Tap the event venue for description.');
+    };
+
+    info.addTo(theMap);
+
+    
+    function getColor(d) {
+        return d == 7   ? '#800026' :
+         d == 6   ? '#BD0026' :
+         d == 5   ? '#E31A1C' :
+         d == 4   ? '#FC4E2A' :
+         d == 3   ? '#FD8D3C' :
+         d == 2   ? '#FEB24C' :
+         d == 1   ? '#FED976' :
+              '#00EDA0';
+    }
+
+    function myStyle(feature) {
+        return {
+      fillColor: getColor(feature.properties.colorId),
+      weight: 2,
+      opacity: 1,
+      color: 'white',
+      dashArray: '3',
+      fillOpacity: 0.7
+        };
+    }
+
+    function highlightFeature(e) {
+      var layer = e.target;
+
+      layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera) {
+        layer.bringToFront();
+      }
+
+      info.update(layer.feature.properties);
+    }
+
+    var geojson;
+
+    function resetHighlight(e) {
+      geojson.resetStyle(e.target);
+      info.update();
+    }
+
+    function zoomToFeature(e) {
+      theMap.fitBounds(e.target.getBounds());
+    }
+
+
+
+    function mySetFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: highlightFeature
+        //click: zoomToFeature
+      });
+    }
+
+    var stories = L.layerGroup([
+      poolHall,
+      inglisHouse,
+      adminBuilding,
+      kelseyMuseum,
+      bentleyLib,
+      exhibitMuseum,
+      powerPlant,
+      oldMain,
+      railroad,
+      medSchool
+    ]).addTo( theMap );
+
+    geojson = L.geoJson(venueData, {
+      style: myStyle,
+      onEachFeature: mySetFeature,
+      // Can be used to filter out (hide) some objects dynamically.  
+      filter: function(feature, layer ) { return true; }
+    }).addTo( theMap );
+
+    
+    
+    var baseLayers = {
+      "Grayscale": grayscale,
+      "Streets": streets,
+      "Open Streets" : osmStreets,
+      "OSM Hot" : osmHot,
+      "Esri" : esriStreets
+    };
+
+
+    // The geoJson object is derived from layerGoup, so we just add it directly to the overlay.  
+    var overlays = { "Venues": geojson, "Staff Stories": stories };
+    var theControl = L.control.layers( baseLayers, overlays ).addTo(theMap);
+
+    geojson.eachLayer(function (layer) {
+      layer.bindPopup(layer.feature.properties.name + ': ' + layer.feature.properties.description);
+    });
+    // Enable functionality to track coordinates of drawn items on the map
+    //trackDraw( theMap,theControl,null );
+
+    // ---Slick---
+    $(document).ready(function(){
+      $('.your-class').slick({
+        arrows: false,
+        dots: true,
+        infinite: false,
+        speed: 500,
+        adaptiveHeight: false,
+        lazyLoad: 'ondemand',
+        lazyLoadBuffer: 0,
+        fade: true,
+        cssEase: 'linear',
+        mobileFirst: true,
+        respondTo: 'min'
+      });
+    });
+  </script>
+
+<!-- Pool Hall Modal -->
+<div id="poolHallMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">A Granddaughter's Reflections of George Thomas O'Neal</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div>
+            <img class="centered" data-lazy="img/MichUnionPoolHall.jpg"/><span style="margin: auto; display: table">Michigan Union Billiards Room, 1937. Photo courtesy of the Bentley Historical Library.</span>
+          </div>
+          <div>
+            <img class="centered" data-lazy="img/GeorgeONeal.jpg"/><span style="margin: auto; display: table">George O'Neal dispenses materials in the pool room at the Michigan Union.</span>
+          </div>
+          <div><p>"During the 30s, 40s &amp; 50s there were only a limited number of hotels and restaurants in Ann Arbor, so the Union provided lodging and meals to many visitors. Many students had rooms with local families, but took their meals at the Union.  The University Club in the Union was always busy with faculty dining and activities.  The large and small Union ballrooms have always hosted events, including wedding receptions.  The Union helped to feed World War II soldiers in training, and for many years it hosted the training table for the U­M football team.  In the 1960’s, the Union sported a swimming pool, a barber shop, and even a bowling alley in the basement.  Today, the Union is no longer as central to campus life, but still plays many important roles for the University."</p>
+          <a href="http://staffstories.umich.edu/a-granddaughters-reflections-carol-oneal-sherry-on-george-thomas-oneal-1932-1978/" >Read more about George O'Neal, U-M Billiards Room Staff member</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Inglis House Modal -->
+<div id="inglisMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Activist Anarchist Archivist</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div>
+            <img class="centered" data-lazy="img/AgnesInglis1928.jpg"/><span style="margin: auto; display: table">Agnes Inglis, 1928, Labadie Collection photograph.</span>
+          </div>
+          <div>
+            <img class="centered" data-lazy="img/AgnesInglis1891.jpg"/><span style="margin: auto; display: table">Agnes Inglis, age 20 (March 4, 1891).</span>
+          </div>
+          <div>
+            <img class="centered" data-lazy="img/AgnesInglis1950.jpg"/><span style="margin: auto; display: table">Agnes Inglis, age 80, 1950. (Photo courtesy of the Labadie Collection, University of Michigan)</span>
+          </div>
+          <div><img class="centered" data-lazy="img/InglisBarn.jpg"/>
+            <span style="margin: auto; display: table">Agnes Inglis with hollyhocks in front of Inglis Barn.</span>
+          </div>
+          <div><p>Until her death in 1952, at the age of eighty-one, Miss Inglis devoted herself, largely without pay or official recognition, to enlarging and “fixing,” as she called it, the personal papers and correspondence, tracts, pamphlets, shop papers, handbills, minute books, union badges and credentials, and publications of numerous radical political and social reform organizations that constituted the original <a href="http://www.lib.umich.edu/labadie­collection/">Labadie</a> gift. </p>
+          <a href="http://staffstories.umich.edu/agnes-inglis-radical-anarchist-and-labadie-collection-curator-1926-1952/" >Read more about radical anarchist Agnes Inglis</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LSA Building Modal -->
+<div id="LSAMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">A Loving Legacy of Stewardship</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/MakingMusic.jpg"/><span style="margin: auto; display: table">Dick Kennedy seated at the piano making music with with daughters Patty (on flute) and Peggy (on trumpet). (Photo by permission of Andrew Sacks.)</span></div>
+          <div><img class="centered" data-lazy="img/TimandPeggyKennedy.jpg"/><span style="margin: auto; display: table">Peggy Sheagren and Tim Kennedy (seated at the piano) in the home they grew up in.</span></div>
+          <div><img class="centered" data-lazy="img/Wedding-Photo.jpg"/><span style="margin: auto; display: table">Dick Kennedy and Ann Marie Moran met at U-M and married in 1955.</span></div>
+          <div><img class="centered" data-lazy="img/Dick-and-Ann.jpg"/></div>
+          <div><img class="centered" data-lazy="img/Kennedy-kids.jpg"/><span style="margin: auto; display: table">The five Kennedy kids. From left (top row): Martha, Stephen, Patty. Lower row: Tim and Peggy.</span></div>
+          <div><img class="centered" data-lazy="img/with-secretary-in-Fleming.jpg"/><span style="margin: auto; display: table">Chatting with secretary Doris Goodwin between meetings in the old Administration Building, today's LSA Building. (Photo by permission of Andrew Sacks.)</span></div>
+          <div><img class="centered" data-lazy="img/Dick-with-Peggy.jpg"/><span style="margin: auto; display: table">Dick Kennedy teaching Peggy how to play Solitaire. (Photo by permission of Andrew Sacks.)</span></div>
+          <div><img class="centered" data-lazy="img/Dick-with-Tim.jpg"/><span style="margin: auto; display: table">Dick consoling Tim following a loss in Little League. (Photo by permission of Andrew Sacks.)</span></div>
+          <div><img class="centered" data-lazy="img/With-student-radicals.jpg"/><span style="margin: auto; display: table">Dick Kennedy meeting with student activists in the Michigan Union. (Photo by permission of Andrew Sacks.)</span></div>
+          <div><img class="centered" data-lazy="img/Dick-with-Peggy-on-Trumpet.jpg"/><span style="margin: auto; display: table">Photo by permission of Andrew Sacks.</span></div>
+          <div><img class="centered" data-lazy="img/Dick-and-Ann_official-function.jpg"/><span style="margin: auto; display: table">Dick and Ann</span></div>
+          <div><img class="centered" data-lazy="img/Richard-Kennedy.jpg"/><span style="margin: auto; display: table">Photo courtesy of the Bentley Historical Library.</span></div>
+          <div><img class="centered" data-lazy="img/thinking.jpg"/><span style="margin: auto; display: table">Photo by permission of Andrew Sacks.</span></div>
+          <div><img class="centered" data-lazy="img/Richard-Kennedy-with-car.jpg"/><span style="margin: auto; display: table">Dick Kennedy outside of the LSA Building in 1967 with a vehicle commemorating the U-M sesquicentennial, which he played a key role in planning. (Photo courtesy of the Bentley Historical Library.)</span></div>
+          <div><p>Loyalty, protectiveness, and pride in the connection to the university, the community and, most of all, to family—these values come across resoundingly in conversations with brother and sister, Tim Kennedy and Peggy Sheagren, reminiscing about their late father, Richard “Dick” Kennedy, the longest-serving executive officer in U-M history.</p>
+          <a href="http://staffstories.umich.edu/a-loving-legacy-of-stewardship/">A daughter and son's reflections on U-M’s longest-serving executive officer</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Kelsey Museum of Archaeology Modal -->
+<div id="KelseyMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Poet, Teacher, Adventurer and Photographer</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/georgeswainfeaturephoto.jpg"/><span style="margin: auto; display: table">George Swain, first U-M photographer.</span></div>
+          <div><img class="centered" data-lazy="img/SwainSlideShow.jpg"/><span style="margin: auto; display: table">Swain (far left) often accompanied U-M professor and archaeologist Francis Kelsey (black suit) to Europe and the Middle East, collecting so many images that The Detroit Free Press once described him as a "supreme camera fiend."</span></div>
+          <div><img class="centered" data-lazy="img/George-Swain.png"/><span style="margin: auto; display: table">Eating lunch near Mount Athos (Greece) with Professor Lake, Greece (June 30, 1925). Courtesy of the Kelsey Museum of Archaeolo gy.</span></div>
+          <div><img class="centered" data-lazy="img/georgeswainriverphoto.png"/><span style="margin: auto; display: table">G.R. Swain photo, courtesy of the Bentley Historical Library.</span></div>
+          <div><p>"Before George Robert Swain settled in Ann Arbor in 1900, he traveled 2000 miles by bicycle through France, Switzerland, Belgium, Holland, and Germany, covering Caesar’s battlefields with his camera. That was just the beginning of his journey..."</p>
+          <a href="http://staffstories.umich.edu/poet-teacher-adventurer/">Read more about George Swain, U-M's first photographer</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Father & Son Bookbinders Modal -->
+<div id="BookBindMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Father and Son Bookbinders</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/DIL24Oct11-Slideshow_PS056.jpg"/><span style="margin: auto; display: table">Restoration Specialist Jim Craven works on a rare book in the Michigan Historical Collections in the Bentley Library.</span></div>
+          <div><img class="centered" data-lazy="img/George-Craven.jpg"/><span style="margin: auto; display: table">George Craven, Bookbinder.</span></div>
+          <div><p>"When George Craven retired as superintendent of binding for the university in 1962, after 38 years with the U-M and sixteen years as binding supervisor, his fellow employees honored him at a party. But the greatest honor bestowed on Mr. Craven may have been when his son, Jim, followed in his bookbinding footsteps..."</p>
+          <a href="http://staffstories.umich.edu/father-and-son-bookbinders/">Read more about George and Jim Craven</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Exhibit Museum Modal -->
+<div id="AuntRuthMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Becoming Aunt Ruth</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/Ruth-B-at-desk.jpg"/><span style="margin: auto; display: table">Ruth Buchanan at her desk in the Exhibit Museum.</span></div>
+          <div><img class="centered" data-lazy="img/Ruth-B-portrait.jpg"/><span style="margin: auto; display: table">Portrait of Ruth Buchanan</span></div>
+          <div><img class="centered" data-lazy="img/Ruth-records.jpg"/><span style="margin: auto; display: table">"Aunt Ruth" with her correspondence records.</span></div>
+          <div><img class="centered" data-lazy="img/Ruth-garden.jpg"/><span style="margin: auto; display: table">Aunt Ruth walking in the garden, wearing her Emblem of Honor pin.</span></div>
+          <div><img class="centered" data-lazy="img/Navy-Mothers-pin.jpg"/><span style="margin: auto; display: table">Though she had no children of her own, she was proud to wear the Navy Mothers' Club pin over her heart.</span></div>
+          <div><img class="centered" data-lazy="img/Ruth-president.jpg"/><span style="margin: auto; display: table">Aunt Ruth, shown here with U-M President Alexander Ruthven and U.S. Military officers.</span></div>
+          <div><img class="centered" data-lazy="img/Ruth-news.jpg"/><span style="margin: auto; display: table">A Detroit News clipping describing Ruth Buchanan's wartime correspondence.</span></div>
+          <div><p>"Night after night during World War II, Ruth Buchanan would leave her workplace at the University of Michigan and return home to her second job..."</p>
+          <a href="http://staffstories.umich.edu/becoming-aunt-ruth/">Read more about Ruth Buchanan</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Power Plant Modal -->
+<div id="PowerPlantMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Power to the People</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/Power-Plant-workers-1917.jpg"/><span style="margin: auto; display: table">This 1917 photo shows the Central Power Plant staff in the boiler room, with a pile of bituminous coal in the foreground. The mustachioed man in the dark overalls is “Chief Boiler Rat” Chris Stoll, who worked at the plant for 27 years and is the great uncle of Ken Brandt, an operations engineer who works at the plant today. Next to Chris, holding a shovel, is Barney Maulbetsch, who married Chris’ sister (both shown in the family portrait below).</span></div>
+          <div><img class="centered" data-lazy="img/Chris-Stoll-Chief-Boiler-Rat.jpg"/><span style="margin: auto; display: table">Chris Stoll, “Chief Boiler Rat,” portrait circa 1917.</span></div>
+          <div><img class="centered" data-lazy="img/Maulbetsch-family.jpg"/><span style="margin: auto; display: table">The Maulbetsch family. Barney Maulbetsch was one of the "boiler rats" shown in the 1917 group photo (top).</span></div>
+          <div><img class="centered" data-lazy="img/Steam-tunnel-contruction-1914.jpg"/><span style="margin: auto; display: table">An elaborate network of tunnels dug by day laborers in the early 1900s is still in use today, conveying steam heat to campus buildings.</span></div>
+          <div><img class="centered" data-lazy="img/UM-Power-House-with-Medical-Building-in-rear.jpg"/><span style="margin: auto; display: table">Central Power House and Medical School</span></div>
+          <div><img class="centered" data-lazy="img/UofM-coal-engine-number-2.jpg"/><span style="margin: auto; display: table">Coal was supplied to the plant via a small electric train on tracks that are now covered by streets and new buildings on the medical campus.</span></div>
+          <div><img class="centered" data-lazy="img/1955-U-M-Train2.jpg"/><span style="margin: auto; display: table">1955 photo shows Russell Hurst, driving the coal train. Hurst was the last engineer to serve the University of Michigan Railroad. (Photo courtesy of Robert Hurst.)</span></div>
+          <div><img class="centered" data-lazy="img/Lee-Curtis-head-boiler-operator-1969.jpg"/><span style="margin: auto; display: table">Lee Curtis, head boiler operator, in heating plant control room, 1969.</span></div>
+          <div><img class="centered" data-lazy="img/North-stack.jpg"/><span style="margin: auto; display: table">The Central Power Plant’s iconic 250-foot North Stack chimney was added in 1924.</span></div>
+          <div><img class="centered" data-lazy="img/View-from-Huron-river.gif"/><span style="margin: auto; display: table">Vintage photo taken from north side of the Huron River shows U-M hospital with the stack of the Central Power Plant dominating above the campus.</span></div>
+          <div><img class="centered" data-lazy="img/Central-Power-Plant-Operations-Staff-2012.jpg"/><span style="margin: auto; display: table">2012 Central Power Plant Operations staff</span></div>
+          <div><p>"When the University of Michigan moved from its original location in Detroit to its “new” home in Ann Arbor in 1837, construction of the U-M’s first campus buildings began. The first university buildings were erected in 1840. During the late 1800’s three separate heating plants were built to provide heat to the new campus buildings. In 1897, the first electrical generating units were installed as gas illumination began to be replaced by electricity...."</p>
+          <a href="http://staffstories.umich.edu/pride-of-place-power-to-the-people/">Read more about U-M's Central Power Plant</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Old Main Modal -->
+<div id="OldMainMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Bringing Down Old Main</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/Old-Main-Hospital-demolition.jpg"/><span style="margin: auto; display: table">Two images from a contact sheet showing the demolition of Old Main. Bentley Historical Library photo.</span></div>
+          <div><img class="centered" data-lazy="img/Old-Main-Bentley-Historical-Library.jpg"/><span style="margin: auto; display: table">Aerial view of Old Main. Bentley Historical Library photo.</span></div>
+          <div><img class="centered" data-lazy="img/Peanut-Butter-Soup.jpg"/><span style="margin: auto; display: table">Peanut Butter Soup Recipe</span></div>
+          <div><p>"Does anyone remember the peanut butter soup? Probably not—I’m not sure it was a hit ... I think the most memorable experience for me was witnessing the bringing down of Old Main Hospital..."</p>
+          <a href="http://staffstories.umich.edu/bringing-down-old-main-a-once-in-a-lifetime-experience/">Read more about the demolished Old Main Hospital</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- U-M Railroad Modal -->
+<div id="railroadMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">The Last Engineer</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/1955-U-M-Train.jpg"/><span style="margin: auto; display: table">1955 photo shows Russell Hurst, driving the coal train. Hurst was the last engineer to serve the University of Michigan Railroad. (Photo courtesy of Robert Hurst.)</span></div>
+          <div><img class="centered" data-lazy="img/coal-car.jpg"/><span style="margin: auto; display: table">University of Michigan Railroad engine pulling a coal car. Photo courtesy of Dr. Mark Hildebrandt.</span></div>
+          <div><img class="centered" data-lazy="img/UM-coal-train.jpg"/><span style="margin: auto; display: table">The maize and blue engine pulling the hopper car. Photo courtesy of Dr. Mark Hildebrandt.</span></div>
+          <div><p>"During the preparations for his memorial service and throughout the months of reflection that followed, I realized that one of my most cherished memories is of working with my father in the late 1950s on the now-defunct University of Michigan Railroad..."</p>
+          <a href="http://staffstories.umich.edu/the-last-engineer/">Read more about U of M's railroad</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hospital (Anatomist Janitor) Modal -->
+<div id="hospitalMod" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Anatomist and Janitor</h4>
+      </div>
+      <div class="modal-body">
+        <div class="your-class">
+          <div><img class="centered" data-lazy="img/Gregor-Nagele.jpg"/><span style="margin: auto; display: table">Gregor Nagele</span></div>
+          <div><img class="centered" data-lazy="img/Doc-Gregor-Nagele.jpg"/><span style="margin: auto; display: table">"Doc" Gregor Nagele. Courtesy of Bentley Historical Library.</span></div>
+          <div><p>"When Gregor Nagele emigrated to the United States from Wittenberg, Germany, a young, bright-eyed, uneducated teenager, he came with a peculiar and valuable skill—commandeering cadavers. The medical students needed “subjects” on which to practice their surgical skills, and Gregor Nagele knew how to get them..."</p>
+          <a href="http://staffstories.umich.edu/gregor-doc-nagele-anatomist-bell-ringer-and-janitor/">Read more about Janitor-Anatomist Gregor Nagele</a> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<!--
+  Helpful notes:
+  Tool to help define color combinations on a map:  http://colorbrewer2.org/
+
+-->

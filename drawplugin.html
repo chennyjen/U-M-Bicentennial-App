@@ -1,0 +1,165 @@
+<html>
+<head>
+  <title>Test</title>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>
+
+  <link rel="stylesheet" href = "easy-button.css">
+  <script src="easy-button.js"></script>
+
+  <a download="coordinates.txt" id="downloadlink" style="display: none">Download</a>
+
+
+  <style>
+    #mapid { height: 450px; }
+  </style>
+
+</head>
+
+<body>
+  <!-- <h1>Draw Tool Plugin</h1> -->
+  <div id="mapid"></div>
+  <script>
+  
+  var map = L.map('mapid').setView([42.27706, -83.73803], 16);
+  var drawCount = 0;
+  var objArray = [];
+  var trackEnable = 1;
+  var outstream = '';
+  var textFile = null;
+  var data = null;
+
+
+
+  var button = L.easyButton('<strong>P</strong>', function(btn, map){
+    outstream = '';
+  for (i = 0; i < objArray.length; i++){
+    var layer = objArray[i];
+    if (layer instanceof L.Marker){
+    outstream += ' Object ' + i + ': ' 
+      + 'Type: Marker ' 
+      + layer.getLatLng().toString();
+    }
+    else if (layer instanceof L.Circle){
+      outstream += ' Object ' + i + ': '
+        + 'Type: Circle, '
+        + 'Center: ' + layer.getLatLng().toString()
+        + ', Radius: ' + layer.getRadius().toString() + ' m';
+    }
+    else if (layer instanceof L.Rectangle){
+      outstream += " Object " + i + ': '
+        + 'Type: Rectangle, '
+        + layer.getLatLngs().toString();
+    }
+    else if (layer instanceof L.Polygon){
+      outstream += ' Object ' + i + ': '
+        + 'Type: Polygon, '
+        + 'Latlngs: ' + layer.getLatLngs().toString();
+    }
+    else if (layer instanceof L.Polyline){
+      outstream += ' Object ' + i + ': '
+        + 'Type: Polyline, '
+        + layer.getLatLngs().toString();
+    }
+  }
+  console.log(outstream);
+  var link = document.getElementById('downloadlink');
+  data = new Blob([outstream], {type: 'text/plain'});
+  if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+  link.href = window.URL.createObjectURL(data);
+  link.style.display = 'block';
+});
+
+  //tile layer
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+  {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1IjoiamVubnljaGVuMDgiLCJhIjoiY2lvMmVieGNnMWFuN3UybTNseHNwOWJhMCJ9.LBt198WR-bu2mOKJ4N3vaA'
+  }).addTo(map);
+  
+
+  // Initialise the FeatureGroup to store editable layers
+  var drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+
+  // Make editable layers 
+  var overlay = {"Track Coordinates":drawnItems};
+  L.control.layers(null,overlay).addTo(map);
+
+  // Initialise the draw control and pass it the FeatureGroup of editable layers
+  var drawControl = new L.Control.Draw({
+      edit: {
+          featureGroup: drawnItems
+      }
+  });
+  map.addControl(drawControl);
+  button.addTo(map);
+  
+
+  map.on('overlayadd', function (a){
+    trackEnable = 1;
+    map.addControl(drawControl);
+    button.addTo(map);
+  });
+  
+  map.on('overlayremove', function (a){
+    trackEnable = 0;
+    map.removeControl(drawControl);
+    button.removeFrom(map);
+  });
+
+  // Add drawn item to map
+  
+  map.on('draw:created', function (e) {
+    if (Boolean(trackEnable)){
+        var type = e.layerType,
+            layer = e.layer;
+
+        drawnItems.addLayer(layer);
+
+        // Set popup to contain drawing's label, set in order of creation
+        layer.bindPopup(drawCount.toString(), {minWidth:10});
+
+        // Set popup to open on mouseover
+        layer.on('mouseover', function (e) {
+            this.openPopup();
+        });
+        layer.on('mouseout', function (e) {
+            this.closePopup();
+        });
+        
+        // Add object to array
+        objArray.push(layer);
+
+        ++drawCount;
+        
+      }
+  });
+
+  map.on('draw:edited', function (e){
+    var layers = e.layers;
+    var latLng;
+    layers.eachLayer(function(layer) {
+      objArray[parseInt(layer._popup.getContent())] = layer;
+    });
+  });
+
+  map.on('draw:deleted', function (e){
+    var layers = e.layers;
+    layers.eachLayer(function(layer){
+        objArray[parseInt(layer._popup.getContent())] = null;
+    });
+  });
+
+  </script>
+
+</body>
+</html>
+	
