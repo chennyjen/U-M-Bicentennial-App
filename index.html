@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <title>B&amp;F Bicentennial</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="stylesheet" href="bfdemo.css" >
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="bower_components/slick-carousel/slick/slick.css"/>
@@ -12,52 +11,8 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css">
   <link rel="stylesheet" href="easy-button.css" >
+  <link rel="stylesheet" href="bfdemo.css" >
 
-  
-<!--  <style>
-    html,body{
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #mymap {
-      height: 100%;
-    }
-    
-    .info {
-        padding: 6px 8px;
-        font: 14px/16px Arial, Helvetica, sans-serif;
-        background: white;
-        background: rgba(255,255,255,0.8);
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        border-radius: 5px;
-    }
-    .info h4 {
-        margin: 0 0 5px;
-        color: #777;
-    }
-    .legend {
-        line-height: 18px;
-        color: #555;
-    }
-    .legend i {
-        width: 28px;
-        height: 18px;
-        float: left;
-        margin-right: 8px;
-        opacity: 0.7;
-    }
-    img.centered {
-        display: block;
-        margin-left: auto;
-        margin-right: auto 
-    }
-    span.centered {
-      display: block;
-      margin-left: auto;
-      margin-right:;
-    }
-  </style> -->
 </head>
 <body>
   <h1>B&amp;F Bicentennial</h1>
@@ -242,26 +197,92 @@
     // Enable functionality to track coordinates of drawn items on the map
     //trackDraw( theMap,theControl,null );
 
-    // ---Slick---
     $(document).ready(function(){
+    //$(window).load(function(){  
+      $("#poolHallMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      });
+      $("#inglisMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      });  
+      $("#LSAMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      }); 
+      $("#KelseyMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      }); 
+      $("#BookBindMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      }); 
+      $("#AuntRuthMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      }); 
+      $("#PowerPlantMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      });
+      $("#OldMainMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      });  
+      $("#railroadMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      }); 
+      $("#hospitalMod").on('shown.bs.modal', function (){
+        // $(".your-class").slick("setPosition",0);
+        setTimeout(function(){
+          $(".your-class").slick("setPosition",0);
+        }, 100);
+      }); 
+      // -- Slick --
       $('.your-class').slick({
-        arrows: false,
-        dots: true,
-        infinite: false,
-        speed: 500,
-        adaptiveHeight: false,
-        lazyLoad: 'ondemand',
-        lazyLoadBuffer: 0,
-        fade: true,
-        cssEase: 'linear',
-        mobileFirst: true,
-        respondTo: 'min'
+         arrows: false,
+         dots: true,
+        // infinite: false,
+        //speed: 750,
+        // adaptiveHeight: true,
+        // variableWidth: true,
+        // centerMode: true,
+        // lazyLoad: 'ondemand',
+        // lazyLoadBuffer: 4,
+        // fade: false,
+         cssEase: 'linear',
+         mobileFirst: true,
+         respondTo: 'min'
       });
     });
+
+
+
   </script>
 
 <!-- Pool Hall Modal -->
-<div id="poolHallMod" class="modal fade" role="dialog">
+<div id="poolHallMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -279,7 +300,7 @@
             <img class="centered" data-lazy="img/GeorgeONeal.jpg"/><span style="margin: auto; display: table">George O'Neal dispenses materials in the pool room at the Michigan Union.</span>
           </div>
           <div><p>"During the 30s, 40s &amp; 50s there were only a limited number of hotels and restaurants in Ann Arbor, so the Union provided lodging and meals to many visitors. Many students had rooms with local families, but took their meals at the Union.  The University Club in the Union was always busy with faculty dining and activities.  The large and small Union ballrooms have always hosted events, including wedding receptions.  The Union helped to feed World War II soldiers in training, and for many years it hosted the training table for the U­M football team.  In the 1960’s, the Union sported a swimming pool, a barber shop, and even a bowling alley in the basement.  Today, the Union is no longer as central to campus life, but still plays many important roles for the University."</p>
-          <a href="http://staffstories.umich.edu/a-granddaughters-reflections-carol-oneal-sherry-on-george-thomas-oneal-1932-1978/" >Read more about George O'Neal, U-M Billiards Room Staff member</a> 
+          <a href="http://staffstories.umich.edu/a-granddaughters-reflections-carol-oneal-sherry-on-george-thomas-oneal-1932-1978/" >Read more about George O'Neal, U-M Billiards Room Staff member</a>
           </div>
         </div>
       </div>
@@ -292,7 +313,7 @@
 </div>
 
 <!-- Inglis House Modal -->
-<div id="inglisMod" class="modal fade" role="dialog">
+<div id="inglisMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -326,7 +347,7 @@
 </div>
 
 <!-- LSA Building Modal -->
-<div id="LSAMod" class="modal fade" role="dialog">
+<div id="LSAMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -362,7 +383,7 @@
 </div>
 
 <!-- Kelsey Museum of Archaeology Modal -->
-<div id="KelseyMod" class="modal fade" role="dialog">
+<div id="KelseyMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -388,7 +409,7 @@
 </div>
 
 <!-- Father & Son Bookbinders Modal -->
-<div id="BookBindMod" class="modal fade" role="dialog">
+<div id="BookBindMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -412,7 +433,7 @@
 </div>
 
 <!-- Exhibit Museum Modal -->
-<div id="AuntRuthMod" class="modal fade" role="dialog">
+<div id="AuntRuthMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -441,7 +462,7 @@
 </div>
 
 <!-- Power Plant Modal -->
-<div id="PowerPlantMod" class="modal fade" role="dialog">
+<div id="PowerPlantMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -474,7 +495,7 @@
 </div>
 
 <!-- Old Main Modal -->
-<div id="OldMainMod" class="modal fade" role="dialog">
+<div id="OldMainMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -499,7 +520,7 @@
 </div>
 
 <!-- U-M Railroad Modal -->
-<div id="railroadMod" class="modal fade" role="dialog">
+<div id="railroadMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -524,7 +545,7 @@
 </div>
 
 <!-- Hospital (Anatomist Janitor) Modal -->
-<div id="hospitalMod" class="modal fade" role="dialog">
+<div id="hospitalMod" class="modal fade" role="dialog" style="height:750px width = 750px">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
