@@ -1,0 +1,63 @@
+id,story_id,title,ordering,media,memo_text,media_type
+1,1,NULL,1,img/MichUnionPoolHall.jpg,"Michigan Union Billiards Room, 1937. Photo courtesy of the Bentley Historical Library.",I
+2,1,NULL,2,img/GeorgeONeal.jpg,George O'Neal dispenses materials in the pool room at the Michigan Union.,I
+3,1,Read More,3,http://staffstories.umich.edu/a-granddaughters-reflections-carol-oneal-sherry-on-george-thomas-oneal-1932-1978/,"During the 30s, 40s & 50s there were only a limited number of hotels and restaurants in Ann Arbor, so the Union provided lodging and meals to many visitors. Many students had rooms with local families, but took their meals at the Union.  The University Club in the Union was always busy with faculty dining and activities.  The large and small Union ballrooms have always hosted events, including wedding receptions.  The Union helped to feed World War II soldiers in training, and for many years it hosted the training table for the U­M football team.  In the 1960’s, the Union sported a swimming pool, a barber shop, and even a bowling alley in the basement.  Today, the Union is no longer as central to campus life, but still plays many important roles for the University.",U
+4,2,NULL,1,img/AgnesInglis1928.jpg,"Agnes Inglis, 1928, Labadie Collection photograph.",I
+5,2,NULL,2,img/AgnesInglis1891.jpg,"Agnes Inglis, age 20 (March 4, 1891).",I
+6,2,NULL,3,img/AgnesInglis1950.jpg,"Agnes Inglis, age 80, 1950. (Photo courtesy of the Labadie Collection, University of Michigan)",I
+7,2,NULL,4,img/InglisBarn.jpg,Agnes Inglis with hollyhocks in front of Inglis Barn.,I
+8,2,Read More,3,http://staffstories.umich.edu/agnes-inglis-radical-anarchist-and-labadie-collection-curator-1926-1952/,"Until her death in 1952, at the age of eighty-one, Miss Inglis devoted herself, largely without pay or official recognition, to enlarging and “fixing,” as she called it, the personal papers and correspondence, tracts, pamphlets, shop papers, handbills, minute books, union badges and credentials, and publications of numerous radical political and social reform organizations that constituted the original",U
+9,3,NULL,1,img/MakingMusic.jpg,Dick Kennedy seated at the piano making music with with his daughters. (Photo by permission of Andrew Sacks.),I
+10,3,NULL,2,img/TimandPeggyKennedy.jpg,Peggy Sheagren and Tim Kennedy (seated at the piano) in the home they grew up in.,I
+11,3,NULL,3,img/Wedding-Photo.jpg,Dick Kennedy and Ann Marie Moran met at U-M and married in 1955.,I
+12,3,NULL,4,img/Dick-and-Ann.jpg,NULL,I
+13,3,NULL,5,img/Kennedy-kids.jpg,"The five Kennedy kids. From left (top row): Martha, Stephen, Patty. Lower row: Tim and Peggy.",I
+14,3,NULL,6,img/with-secretary-in-Fleming.jpg,"Chatting with secretary Doris Goodwin between meetings in the old Administration Building, today's LSA Building. (Photo by permission of Andrew Sacks.)",I
+15,3,NULL,7,img/Dick-with-Peggy.jpg,Dick Kennedy teaching Peggy how to play Solitaire. (Photo by permission of Andrew Sacks.),I
+16,3,NULL,8,img/Dick-with-Tim.jpg,Dick consoling Tim following a loss in Little League. (Photo by permission of Andrew Sacks.),I
+17,3,NULL,9,img/With-student-radicals.jpg,Dick Kennedy meeting with student activists in the Michigan Union. (Photo by permission of Andrew Sacks.),I
+18,3,NULL,10,img/Dick-with-Peggy-on-Trumpet.jpg,Photo by permission of Andrew Sacks.,I
+19,3,NULL,11,img/Dick-and-Ann_official-function.jpg,Dick and Ann,I
+20,3,NULL,12,img/Richard-Kennedy.jpg,Photo courtesy of the Bentley Historical Library.,I
+21,3,NULL,13,img/thinking.jpg,Photo by permission of Andrew Sacks.,I
+22,3,NULL,14,img/Richard-Kennedy-with-car.jpg,Dick Kennedy outside of the LSA Building in 1967 with a vehicle commemorating the U-M sesquicentennial. (Photo courtesy of the Bentley Historical Library.),I
+23,3,Read More,15,http://staffstories.umich.edu/a-loving-legacy-of-stewardship/,"Loyalty, protectiveness, and pride in the connection to the university, the community and, most of all, to family—these values come across resoundingly in conversations with brother and sister, Tim Kennedy and Peggy Sheagren, reminiscing about their late father, Richard “Dick” Kennedy, the longest-serving executive officer in U-M history.",U
+24,4,NULL,1,img/georgeswainfeaturephoto.jpg,"George Swain, first U-M photographer.",I
+25,4,NULL,2,img/SwainSlideShow.jpg,"Swain (far left) often accompanied U-M professor and archaeologist Francis Kelsey (black suit) to Europe and the Middle East, collecting so many images that The Detroit Free Press once described him as a ""supreme camera fiend.""",I
+26,4,NULL,3,img/George-Swain.png,"Eating lunch near Mount Athos (Greece) with Professor Lake, Greece (June 30, 1925). Courtesy of the Kelsey Museum of Archaeology.",I
+27,4,NULL,4,img/georgeswainriverphoto.png,"G.R. Swain photo, courtesy of the Bentley Historical Library.",I
+28,4,Read More,5,http://staffstories.umich.edu/poet-teacher-adventurer/,"Before George Robert Swain settled in Ann Arbor in 1900, he traveled 2000 miles by bicycle through France, Switzerland, Belgium, Holland, and Germany, covering Caesar’s battlefields with his camera. That was just the beginning of his journey...",U
+29,5,NULL,1,img/DIL24Oct11-Slideshow_PS056.jpg,Restoration Specialist Jim Craven works on a rare book in the Michigan Historical Collections in the Bentley Library.,I
+30,5,NULL,2,img/George-Craven.jpg,"George Craven, Bookbinder.",I
+31,5,Read More,3,http://staffstories.umich.edu/father-and-son-bookbinders/,"When George Craven retired as superintendent of binding for the university in 1962, after 38 years with the U-M and sixteen years as binding supervisor, his fellow employees honored him at a party. But the greatest honor bestowed on Mr. Craven may have been when his son, Jim, followed in his bookbinding footsteps...",U
+32,6,NULL,1,img/Ruth-B-at-desk.jpg,Ruth Buchanan at her desk in the Exhibit Museum.,I
+33,6,NULL,2,img/Ruth-B-portrait.jpg,Portrait of Ruth Buchanan,I
+34,6,NULL,3,img/Ruth-records.jpg,Aunt Ruth with her correspondence records.,I
+35,6,NULL,4,img/Ruth-garden.jpg,"Aunt Ruth walking in the garden, wearing her Emblem of Honor pin.",I
+36,6,NULL,5,img/Navy-Mothers-pin.jpg,"Though she had no children of her own, she was proud to wear the Navy Mothers' Club pin over her heart.",I
+37,6,NULL,6,img/Ruth-president.jpg,"Aunt Ruth, shown here with U-M President Alexander Ruthven and U.S. Military officers.",I
+38,6,NULL,7,img/Ruth-news.jpg,A Detroit News clipping describing Ruth Buchanan's wartime correspondence.,I
+39,6,Read More,8,http://staffstories.umich.edu/becoming-aunt-ruth/,"Night after night during World War II, Ruth Buchanan would leave her workplace at the University of Michigan and return home to her second job...",U
+40,7,NULL,1,img/Power-Plant-workers-1917.jpg,"This 1917 photo shows the Central Power Plant staff in the boiler room, with a pile of bituminous coal in the foreground.",I
+41,7,NULL,2,img/Chris-Stoll-Chief-Boiler-Rat.jpg,"Chris Stoll, “Chief Boiler Rat,” portrait circa 1917.",I
+42,7,NULL,3,img/Maulbetsch-family.jpg,"The Maulbetsch family. Barney Maulbetsch was one of the ""boiler rats"" shown in the 1917 group photo (top).",I
+43,7,NULL,4,img/Steam-tunnel-contruction-1914.jpg,"An elaborate network of tunnels dug by day laborers in the early 1900s is still in use today, conveying steam heat to campus buildings.",I
+44,7,NULL,5,img/UM-Power-House-with-Medical-Building-in-rear.jpg,Central Power House and Medical School,I
+45,7,NULL,6,img/UofM-coal-engine-number-2.jpg,Coal was supplied to the plant via a small electric train on tracks that are now covered by streets and new buildings on the medical campus.,I
+46,7,NULL,7,img/1955-U-M-Train.jpg,"1955 photo shows Russell Hurst, driving the coal train. Hurst was the last engineer to serve the University of Michigan Railroad. (Photo courtesy of Robert Hurst.)",I
+47,7,NULL,8,img/Lee-Curtis-head-boiler-operator-1969.jpg,"Lee Curtis, head boiler operator, in heating plant control room, 1969.",I
+48,7,NULL,9,img/North-stack.jpg,The Central Power Plant’s iconic 250-foot North Stack chimney was added in 1924.,I
+49,7,NULL,10,img/View-from-Huron-river.gif,Vintage photo taken from north side of the Huron River shows U-M hospital with the stack of the Central Power Plant dominating above the campus.,I
+50,7,NULL,11,img/Central-Power-Plant-Operations-Staff-2012.jpg,2012 Central Power Plant Operations staff,I
+51,7,Read More,12,http://staffstories.umich.edu/pride-of-place-power-to-the-people/,"When the University of Michigan moved from its original location in Detroit to its “new” home in Ann Arbor in 1837, construction of the U-M’s first campus buildings began. The first university buildings were erected in 1840. During the late 1800’s three separate heating plants were built to provide heat to the new campus buildings. In 1897, the first electrical generating units were installed as gas illumination began to be replaced by electricity....",U
+52,8,NULL,1,img/Old-Main-Hospital-demolition.jpg,Two images from a contact sheet showing the demolition of Old Main. Bentley Historical Library photo.,I
+53,8,NULL,2,img/Old-Main-Bentley-Historical-Library.jpg,Aerial view of Old Main. Bentley Historical Library photo.,I
+54,8,NULL,3,img/Peanut-Butter-Soup.jpg,Peanut Butter Soup Recipe,I
+55,8,Read More,4,http://staffstories.umich.edu/bringing-down-old-main-a-once-in-a-lifetime-experience/,Does anyone remember the peanut butter soup? Probably not—I’m not sure it was a hit ... I think the most memorable experience for me was witnessing the bringing down of Old Main Hospital...,U
+56,9,NULL,1,img/1955-U-M-Train.jpg,Russell Hurst was the last engineer to serve the University of Michigan Railroad. (Photo courtesy of Robert Hurst.),I
+57,9,NULL,2,img/coal-car.jpg,University of Michigan Railroad engine pulling a coal car. Photo courtesy of Dr. Mark Hildebrandt.,I
+58,9,NULL,3,img/UM-coal-train.jpg,The maize and blue engine pulling the hopper car. Photo courtesy of Dr. Mark Hildebrandt.,I
+59,9,Read More,4,http://staffstories.umich.edu/the-last-engineer/,"During the preparations for his memorial service and throughout the months of reflection that followed, I realized that one of my most cherished memories is of working with my father in the late 1950s on the now-defunct University of Michigan Railroad...",U
+60,10,NULL,1,img/Gregor-Nagele.jpg,Gregor Nagele,I
+61,10,NULL,2,img/Doc-Gregor-Nagele.jpg,Doc Gregor Nagele. Courtesy of Bentley Historical Library.,I
+62,10,Read More,3,http://staffstories.umich.edu/gregor-doc-nagele-anatomist-bell-ringer-and-janitor/,"When Gregor Nagele emigrated to the United States from Wittenberg, Germany, a young, bright-eyed, uneducated teenager, he came with a peculiar and valuable skill—commandeering cadavers. The medical students needed “subjects” on which to practice their surgical skills, and Gregor Nagele knew how to get them...",U
