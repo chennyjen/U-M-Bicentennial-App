@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css">
   <link rel="stylesheet" href="easy-button.css" >
-  <link rel="stylesheet" href="http://cdn.quilljs.com/1.0.0-beta.2/quill.snow.css"/>
+  <link href="http://cdn.quilljs.com/1.0.0-beta.2/quill.snow.css" rel="stylesheet">
   <link rel="stylesheet" href="bfdemo.css" >
 
 </head>
@@ -23,39 +23,69 @@
   <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
   <script src="bf_locations.js"></script>   <!-- Defines the venueData[] array with list of locations and their description. -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://cdn.quilljs.com/1.0.0-beta.2/quill.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>
   <script src="easy-button.js"></script>
-  <script src="http://cdn.quilljs.com/1.0.0-beta.2/quill.js"></script>
 
   <script src="leaflet-track-draw.js"></script>
   <script src="app.js"></script>
-
 
   <!-- Content Editor Modal -->
   <div id="contentEditor" class="modal fade" role="dialog" style="height:750px width = 750px">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Test Editor</h4>
-        </div>
-        <div class="modal-body">
-          <!-- Create the toolbar container -->
-          <div id="toolbar">
-            <button class="ql-bold">Bold</button>
-            <button class="ql-italic">Italic</button>
+        <form class="form-horizontal" role="form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <div id="story-title">
+                <label for "story-name">Enter story title:</label>
+                <input id="story_t"type="text" class="form-control" name="story-name">
+              </div>
           </div>
-
-<!-- Create the editor container -->
-<div id="editor">
-  <p>Hello World!</p>
-</div>
-        </div>
+          <div class="modal-body">
+                <div id="slide-title">
+                  <label for="slide-name">Enter slide title:</label>
+                  <input id="slide_t" type="text" class="form-control" name="slide-name">
+                </div>
+                <div id="add-media">
+                  <label for="media">Upload Media:</label>
+                  <input type="file" class="form-control" name="media" disabled="true">
+                  <br><label for="link">or Enter URL</label>
+                  <input type="url" class="form-control" name="link">
+                </div>
+                  <br><div id='toolbar-container'>
+                    <span class="ql-formats">
+                      <select class="ql-header">
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option selected></option>
+                      </select>
+                    </span>
+                    <span class="ql-formats">
+                      <button class="ql-bold"></button>
+                      <button class="ql-italic"></button>
+                      <button class="ql-underline"></button>
+                    </span>
+                  </div>
+                  <div id="editor-container" style="height:150px">
+                    <p><br></p>
+                  </div>
+            </div>
+          <div class="modal-footer">
+            <!-- <button type="button">Previous Slide</button>
+            <button type="button">Next Slide</button> -->
+            <input id="submit-story" style="float: left;" onclick="submitStory()" type="button" class="btn btn-success" value="Save Story">
+            <button type="button" class="btn btn-primary"id="add-slide">Add Slide</button>
+            <!--<button type="button" class="close" data-dismiss="modal" style-"float: left;">Cancel</button>-->
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
+  
 
   <!-- Pool Hall Modal -->
   <div id="poolHallMod" class="modal fade" role="dialog" style="height:750px width = 750px">
@@ -67,7 +97,7 @@
           <h4 class="modal-title">A Granddaughter's Reflections of George Thomas O'Neal</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div>
               <img class="centered" data-lazy="img/MichUnionPoolHall.jpg"/><span style="margin: auto; display: table">Michigan Union Billiards Room, 1937. Photo courtesy of the Bentley Historical Library.</span>
             </div>
@@ -96,7 +126,7 @@
           <h4 class="modal-title">Activist Anarchist Archivist</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div>
               <img class="centered" data-lazy="img/AgnesInglis1928.jpg"/><span style="margin: auto; display: table">Agnes Inglis, 1928, Labadie Collection photograph.</span>
             </div>
@@ -130,7 +160,7 @@
           <h4 class="modal-title">A Loving Legacy of Stewardship</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/MakingMusic.jpg"/><span style="margin: auto; display: table">Dick Kennedy seated at the piano making music with with his daughters. (Photo by permission of Andrew Sacks.)</span></div>
             <div><img class="centered" data-lazy="img/TimandPeggyKennedy.jpg"/><span style="margin: auto; display: table">Peggy Sheagren and Tim Kennedy (seated at the piano) in the home they grew up in.</span></div>
             <div><img class="centered" data-lazy="img/Wedding-Photo.jpg"/><span style="margin: auto; display: table">Dick Kennedy and Ann Marie Moran met at U-M and married in 1955.</span></div>
@@ -166,7 +196,7 @@
           <h4 class="modal-title">Poet, Teacher, Adventurer and Photographer</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/georgeswainfeaturephoto.jpg"/><span style="margin: auto; display: table">George Swain, first U-M photographer.</span></div>
             <div><img class="centered" data-lazy="img/SwainSlideShow.jpg"/><span style="margin: auto; display: table">Swain (far left) often accompanied U-M professor and archaeologist Francis Kelsey (black suit) to Europe and the Middle East, collecting so many images that The Detroit Free Press once described him as a "supreme camera fiend."</span></div>
             <div><img class="centered" data-lazy="img/George-Swain.png"/><span style="margin: auto; display: table">Eating lunch near Mount Athos (Greece) with Professor Lake, Greece (June 30, 1925). Courtesy of the Kelsey Museum of Archaeology.</span></div>
@@ -192,7 +222,7 @@
           <h4 class="modal-title">Father and Son Bookbinders</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/DIL24Oct11-Slideshow_PS056.jpg"/><span style="margin: auto; display: table">Restoration Specialist Jim Craven works on a rare book in the Michigan Historical Collections in the Bentley Library.</span></div>
             <div><img class="centered" data-lazy="img/George-Craven.jpg"/><span style="margin: auto; display: table">George Craven, Bookbinder.</span></div>
             <div><p>"When George Craven retired as superintendent of binding for the university in 1962, after 38 years with the U-M and sixteen years as binding supervisor, his fellow employees honored him at a party. But the greatest honor bestowed on Mr. Craven may have been when his son, Jim, followed in his bookbinding footsteps..."</p>
@@ -216,7 +246,7 @@
           <h4 class="modal-title">Becoming Aunt Ruth</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/Ruth-B-at-desk.jpg"/><span style="margin: auto; display: table">Ruth Buchanan at her desk in the Exhibit Museum.</span></div>
             <div><img class="centered" data-lazy="img/Ruth-B-portrait.jpg"/><span style="margin: auto; display: table">Portrait of Ruth Buchanan</span></div>
             <div><img class="centered" data-lazy="img/Ruth-records.jpg"/><span style="margin: auto; display: table">"Aunt Ruth" with her correspondence records.</span></div>
@@ -245,7 +275,7 @@
           <h4 class="modal-title">Power to the People</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/Power-Plant-workers-1917.jpg"/><span style="margin: auto; display: table">This 1917 photo shows the Central Power Plant staff in the boiler room, with a pile of bituminous coal in the foreground. </span></div>
             <div><img class="centered" data-lazy="img/Chris-Stoll-Chief-Boiler-Rat.jpg"/><span style="margin: auto; display: table">Chris Stoll, “Chief Boiler Rat,” portrait circa 1917.</span></div>
             <div><img class="centered" data-lazy="img/Maulbetsch-family.jpg"/><span style="margin: auto; display: table">The Maulbetsch family. Barney Maulbetsch was one of the "boiler rats" shown in the 1917 group photo (top).</span></div>
@@ -278,7 +308,7 @@
           <h4 class="modal-title">Bringing Down Old Main</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/Old-Main-Hospital-demolition.jpg"/><span style="margin: auto; display: table">Two images from a contact sheet showing the demolition of Old Main. Bentley Historical Library photo.</span></div>
             <div><img class="centered" data-lazy="img/Old-Main-Bentley-Historical-Library.jpg"/><span style="margin: auto; display: table">Aerial view of Old Main. Bentley Historical Library photo.</span></div>
             <div><img class="centered" data-lazy="img/Peanut-Butter-Soup.jpg"/><span style="margin: auto; display: table">Peanut Butter Soup Recipe</span></div>
@@ -303,7 +333,7 @@
           <h4 class="modal-title">The Last Engineer</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/1955-U-M-Train.jpg"/><span style="margin: auto; display: table">Russell Hurst was the last engineer to serve the University of Michigan Railroad. (Photo courtesy of Robert Hurst.)</span></div>
             <div><img class="centered" data-lazy="img/coal-car.jpg"/><span style="margin: auto; display: table">University of Michigan Railroad engine pulling a coal car. Photo courtesy of Dr. Mark Hildebrandt.</span></div>
             <div><img class="centered" data-lazy="img/UM-coal-train.jpg"/><span style="margin: auto; display: table">The maize and blue engine pulling the hopper car. Photo courtesy of Dr. Mark Hildebrandt.</span></div>
@@ -328,7 +358,7 @@
           <h4 class="modal-title">Anatomist and Janitor</h4>
         </div>
         <div class="modal-body">
-          <div class="your-class">
+          <div class="story">
             <div><img class="centered" data-lazy="img/Gregor-Nagele.jpg"/><span style="margin: auto; display: table">Gregor Nagele</span></div>
             <div><img class="centered" data-lazy="img/Doc-Gregor-Nagele.jpg"/><span style="margin: auto; display: table">"Doc" Gregor Nagele. Courtesy of Bentley Historical Library.</span></div>
             <div><p>"When Gregor Nagele emigrated to the United States from Wittenberg, Germany, a young, bright-eyed, uneducated teenager, he came with a peculiar and valuable skill—commandeering cadavers. The medical students needed “subjects” on which to practice their surgical skills, and Gregor Nagele knew how to get them..."</p>

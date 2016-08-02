@@ -4,7 +4,7 @@ html,body{
   padding: 0;
 }
 #mymap {
-  height: 100%;
+  height: 450px;
 }
 
 .info {
@@ -31,16 +31,16 @@ html,body{
     opacity: 0.7;
 }
 .modal-body {
-  height: auto;
-  text-align: center;
+  height: calc(100vh - 212px);
+  overflow-y: auto;
 }
-.your-class .your-item {
+.story .your-item {
       display: none;
 }
-.your-class .your-item:first-child {
+.story .your-item:first-child {
   display: block;
 }
-.your-class.slick-initialized .your-item {
+.story.slick-initialized .your-item {
   display: block;
   text-align: center;
 }

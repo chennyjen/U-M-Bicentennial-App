@@ -34,7 +34,6 @@
         railroad = L.marker([42.287207,-83.741678]).bindPopup('University of Michigan Railroad:'+'<a href="#" data-toggle="modal" data-target="#railroadMod"><br>The Last Engineer</a>'),
         medSchool = L.marker([42.283214,-83.733599]).bindPopup('Anatomy Labs:'+'<a href="#" data-toggle="modal" data-target="#hospitalMod"><br>Anatomist and Janitor</a>'); 
 
-
     var theMap = L.map( 'mymap', {
       center: [42.27816, -83.73822],
       zoom: 16,
@@ -123,6 +122,54 @@
       });
     }
 
+    var editorPopup = L.popup();
+    function onMapClick(e) {
+      editorPopup.setLatLng(e.latlng)
+      .setContent('<a href="#" data-toggle="modal" data-target="#contentEditor">New Story Here?</a>')
+      .openOn( theMap );
+
+      var quill = new Quill('#editor-container', {
+        modules: {
+          toolbar: '#toolbar-container'
+        },
+        placeholder: 'Enter story text',
+        theme: 'snow'
+      });
+
+      //$('.add-slide').slick('slickAdd',"<div></div>");
+    }
+
+    theMap.on('click', onMapClick);
+
+    function submitStory(){
+      var storytitle = document.getElementById("story_t").value;
+      var slidetitle = document.getElementById("slide_t").value;
+
+      var dataString = ("story_title=" + storytitle + "&slide_title=" + slidetitle);
+      console.log(dataString);
+      if (storytitle == '' || slidetitle == '' ) {
+        alert("Please Enter Title Names");
+      } else {
+          // AJAX code to submit form.
+          $.ajax({
+            type: "POST",
+            url: "submit.php",
+            data: dataString,
+            cache: false,
+            success: function() {
+              alert("submitted");
+            }
+            // error: function (xhr, ajaxOptions, thrownError) {
+            //   alert(xhr.status);
+            //   alert(xhr.responseText);
+            //   alert(thrownError);
+            // }
+          });
+        }
+        return false;
+          
+    };
+
     var stories = L.layerGroup([
       poolHall,
       inglisHouse,
@@ -134,7 +181,7 @@
       oldMain,
       railroad,
       medSchool
-    ]).addTo( theMap );
+    ]);//.addTo( theMap );
 
     geojson = L.geoJson(venueData, {
       style: myStyle,
@@ -164,74 +211,83 @@
 
     // Enable functionality to track coordinates of drawn items on the map
     //trackDraw( theMap,theControl,null );
-
+    
     $(document).ready(function(){
+      $('#contentEditor').on('hidden.bs.modal', function () {
+        $('#story-title').html('<label for "story-title">Enter story title:</label><input id="story_t" type="text" class="form-control">');
+        $("#slide-title").html('<label for "slide-title">Enter slide title:</label><input id="slide_t" type="text" class="form-control">');
+        $("#add-media").html('<label for "media">Upload Media:</label><input type="file" name="media"><br><label for "link">or Enter URL</label><input type="text" class="form-control">');
+        $("#editor-container").html('<p><br></p>');
+        var quill = new Quill('#editor-container', {
+          modules: {
+            toolbar: '#toolbar-container'
+          },
+          placeholder: 'Enter story text',
+          theme: 'snow'
+        });
+      });
       $("#poolHallMod").on('shown.bs.modal', function (){
         $('.slick-slider').resize();
-        // setTimeout(function(){
-        //   $(".your-class").slick("setPosition",0);
-        // }, 5);
+        setTimeout(function(){
+          $(".story").slick("setPosition",0);
+        }, 5);
       });
       $("#inglisMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       });  
       $("#LSAMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       }); 
       $("#KelseyMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       }); 
       $("#BookBindMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       }); 
       $("#AuntRuthMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       }); 
       $("#PowerPlantMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       });
       $("#OldMainMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       });  
       $("#railroadMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       }); 
       $("#hospitalMod").on('shown.bs.modal', function (){
         setTimeout(function(){
-          $(".your-class").slick("setPosition",0);
+          $(".story").slick("setPosition",0);
         }, 5);
       }); 
       // -- Slick --
-      $('.your-class').slick({
+      $('.story').slick({
          arrows: false,
          dots: true,
-        // infinite: false,
-        //speed: 750,
-        // adaptiveHeight: true,
-        // variableWidth: true,
-        // centerMode: true,
-        // lazyLoad: 'ondemand',
-        // lazyLoadBuffer: 4,
-        // fade: false,
          cssEase: 'linear',
          mobileFirst: true,
          respondTo: 'min'
       });
+      $('#input-form').slick({
+        arrows: false,
+        infinite: false
+      })
     });
  

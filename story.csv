@@ -1,11 +1,11 @@
-id,title,location,story_ref,last_update,category,map_id
-1,A Granddaughter's Reflections of George Thomas O'Neal,"[42.275149,-83.741515]",,6/28/2016,StaffStories,NULL
-2,Activist Anarchist Archivist,"[42.277837,-83.717012]",http://staffstories.umich.edu/agnes-inglis-radical-anarchist-and-labadie-collection-curator-1926-1952/,6/28/2016,StaffStories,NULL
-3,A Loving Legacy of Stewardship,"[42.276248,-83.741242]",http://staffstories.umich.edu/a-loving-legacy-of-stewardship/,6/28/2016,StaffStories,NULL
-4,"Poet, Teacher, Adventurer and Photographer","[42.276722,-83.741392]",http://staffstories.umich.edu/poet-teacher-adventurer/,6/28/2016,StaffStories,NULL
-5,Father and Son Bookbinders,"[42.289588,-83.712220]",http://staffstories.umich.edu/father-and-son-bookbinders/,6/28/2016,StaffStories,NULL
-6,Becoming Aunt Ruth,"[42.278184,-83.734389]",http://staffstories.umich.edu/becoming-aunt-ruth/,6/28/2016,StaffStories,NULL
-7,Power to the People,"[42.280941,-83.734526]",http://staffstories.umich.edu/pride-of-place-power-to-the-people/,6/28/2016,StaffStories,NULL
-8,Bringing Down Old Main,"[42.282845,-83.730983]",http://staffstories.umich.edu/bringing-down-old-main-a-once-in-a-lifetime-experience/,6/28/2016,StaffStories,NULL
-9,The Last Engineer,"[42.287207,-83.741678]",http://staffstories.umich.edu/the-last-engineer/,6/28/2016,StaffStories,NULL
-10,Anatomist and Janitor,"[42.283214,-83.733599]",http://staffstories.umich.edu/gregor-doc-nagele-anatomist-bell-ringer-and-janitor/,6/28/2016,StaffStories,NULL
+id,title,story_ref,last_update,category,map_id,lat,lng
+1,A Granddaughter's Reflections of George Thomas O'Neal,http://staffstories.umich.edu/a-granddaughters-reflections-carol-oneal-sherry-on-george-thomas-oneal-1932-1978/,2016-06-28 13:52:00,StaffStories,NULL,42.275149,-83.741515
+2,Activist Anarchist Archivist,http://staffstories.umich.edu/agnes-inglis-radical-anarchist-and-labadie-collection-curator-1926-1952/,2016-06-28 13:52:00,StaffStories,NULL,42.277837,-83.717012
+3,A Loving Legacy of Stewardship,http://staffstories.umich.edu/a-loving-legacy-of-stewardship/,2016-06-28 13:52:00,StaffStories,NULL,42.276248,-83.741242
+4,"Poet, Teacher, Adventurer and Photographer",http://staffstories.umich.edu/poet-teacher-adventurer/,2016-06-28 13:52:00,StaffStories,NULL,42.276722,-83.741392
+5,Father and Son Bookbinders,http://staffstories.umich.edu/father-and-son-bookbinders/,2016-06-28 13:52:00,StaffStories,NULL,42.289588,-83.71222
+6,Becoming Aunt Ruth,http://staffstories.umich.edu/becoming-aunt-ruth/,2016-06-28 13:52:00,StaffStories,NULL,42.278184,-83.734389
+7,Power to the People,http://staffstories.umich.edu/pride-of-place-power-to-the-people/,2016-06-28 13:52:00,StaffStories,NULL,42.280941,-83.734526
+8,Bringing Down Old Main,http://staffstories.umich.edu/bringing-down-old-main-a-once-in-a-lifetime-experience/,2016-06-28 13:52:00,StaffStories,NULL,42.282845,-83.730983
+9,The Last Engineer,http://staffstories.umich.edu/the-last-engineer/,2016-06-28 13:52:00,StaffStories,NULL,42.287207,-83.741678
+10,Anatomist and Janitor,http://staffstories.umich.edu/gregor-doc-nagele-anatomist-bell-ringer-and-janitor/,2016-06-28 13:52:00,StaffStories,NULL,42.283214,-83.733599
