@@ -141,34 +141,38 @@
 
     theMap.on('click', onMapClick);
 
-    function submitStory(){
-      var storytitle = document.getElementById("story_t").value;
-      var slidetitle = document.getElementById("slide_t").value;
-
-      var dataString = ("story_title=" + storytitle + "&slide_title=" + slidetitle);
-      console.log(dataString);
-      if (storytitle == '' || slidetitle == '' ) {
-        alert("Please Enter Title Names");
-      } else {
-          // AJAX code to submit form.
-          $.ajax({
-            type: "POST",
-            url: "submit.php",
-            data: dataString,
-            cache: false,
-            success: function() {
-              alert("submitted");
-            }
-            // error: function (xhr, ajaxOptions, thrownError) {
-            //   alert(xhr.status);
-            //   alert(xhr.responseText);
-            //   alert(thrownError);
-            // }
-          });
-        }
-        return false;
-          
-    };
+    $(document).ready(function(){
+      $("#submit-story").click(function() {
+        var storytitle = document.getElementById("story_t").value;
+        var slidetitle = document.getElementById("slide_t").value;
+        var dataString = ("story_title=" + storytitle + "&slide_title=" + slidetitle);
+        console.log(dataString);
+        if (storytitle == '' || slidetitle == '' ) {
+          alert("Please Enter Title Names");
+        } else {
+              // AJAX code to submit form.
+              //alert(dataString);
+              $.ajax({
+                type: "POST",
+                url: "submit.php",
+                data: dataString,
+                //dataType: "text",
+                //cache: false,
+                success: function(data) {
+                  $("#contentEditor").modal("hide");
+                  alert("Form successfully submitted");
+                }
+                // error: function (xhr, ajaxOptions, thrownError) {
+                //   alert(xhr.status);
+                //   alert(xhr.responseText);
+                //   alert(thrownError);
+                // }
+              });
+          }
+          return false;
+            
+      });
+    });
 
     var stories = L.layerGroup([
       poolHall,
