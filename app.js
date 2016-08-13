@@ -123,50 +123,77 @@
     }
 
     var editorPopup = L.popup();
+    var currentLocation;
     function onMapClick(e) {
+      currentLocation = e.latlng;
       editorPopup.setLatLng(e.latlng)
       .setContent('<a href="#" data-toggle="modal" data-target="#contentEditor">New Story Here?</a>')
       .openOn( theMap );
-
-      var quill = new Quill('#editor-container', {
-        modules: {
-          toolbar: '#toolbar-container'
-        },
-        placeholder: 'Enter story text',
-        theme: 'snow'
-      });
-
-      //$('.add-slide').slick('slickAdd',"<div></div>");
     }
 
     theMap.on('click', onMapClick);
 
     $(document).ready(function(){
+      $.ajax({                                      
+        url: 'getstories.php',                         
+        data: "",                        
+        dataType: 'json',                
+        success: function(data)          
+        {
+          for (var i = 0; i < data.length; i++) {
+            var currentObject = data[i];
+            if (currentObject.lat != null){
+              var marker=L.marker([currentObject.lat,currentObject.lng]).addTo(theMap);
+              marker.bindPopup('<a class="dialog" href=#>'+ currentObject.title + '</a>' + ": " + currentObject.abstract);
+              $(document).on("click", ".dialog", function(e) {
+                bootbox.dialog({
+                  message: currentObject.story_text + '<br><br>' + currentObject.url,
+                  title: currentObject.title,
+                  buttons: {
+                    main: {
+                      label: "Close Story",
+                      className: "btn-primary",
+                      callback: function(){
+                        bootbox.hideAll();
+                      }
+                    }
+                  }
+                });
+              }); //click function
+            } // if
+          }// for
+       } // success function 
+      }); // ajax
       $("#submit-story").click(function() {
         var storytitle = document.getElementById("story_t").value;
-        var slidetitle = document.getElementById("slide_t").value;
-        var dataString = ("story_title=" + storytitle + "&slide_title=" + slidetitle);
+        var abstract = document.getElementById("story_abstr").value;
+        var url = document.getElementById("story_link").value;
+        var text = document.getElementById("story_txt").value;
+        var lat = currentLocation.lat;
+        var lng = currentLocation.lng;
+        var dataString = ("story_title=" + storytitle + "&abstract=" + abstract + "&url=" + url + "&text=" + text + "&lat=" + lat + "&lng=" + lng);
         console.log(dataString);
-        if (storytitle == '' || slidetitle == '' ) {
-          alert("Please Enter Title Names");
-        } else {
-              // AJAX code to submit form.
-              //alert(dataString);
+        if (storytitle == '' || abstract == '' || text == '') {
+          alert("Please give the story at title");
+        }
+        else if (abstract == ''){
+          alert("Please enter a short description of the story");
+        }
+        else if (text == ''){
+          alert("Please enter your story in the text box");
+        }
+        else {
               $.ajax({
                 type: "POST",
-                url: "submit.php",
+                url: "submit.php/",
                 data: dataString,
-                //dataType: "text",
-                //cache: false,
+                cache: false,
                 success: function(data) {
+                  //console.log(dataString);
                   $("#contentEditor").modal("hide");
-                  alert("Form successfully submitted");
+                  alert(data);
+                  //alert("Form successfully submitted");
                 }
-                // error: function (xhr, ajaxOptions, thrownError) {
-                //   alert(xhr.status);
-                //   alert(xhr.responseText);
-                //   alert(thrownError);
-                // }
               });
           }
           return false;
@@ -219,16 +246,16 @@
     $(document).ready(function(){
       $('#contentEditor').on('hidden.bs.modal', function () {
         $('#story-title').html('<label for "story-title">Enter story title:</label><input id="story_t" type="text" class="form-control">');
-        $("#slide-title").html('<label for "slide-title">Enter slide title:</label><input id="slide_t" type="text" class="form-control">');
-        $("#add-media").html('<label for "media">Upload Media:</label><input type="file" name="media"><br><label for "link">or Enter URL</label><input type="text" class="form-control">');
-        $("#editor-container").html('<p><br></p>');
-        var quill = new Quill('#editor-container', {
-          modules: {
-            toolbar: '#toolbar-container'
-          },
-          placeholder: 'Enter story text',
-          theme: 'snow'
-        });
+        $("#story-abstract").html('<label for="abstract">Enter short description:</label><input id="story_abstr" type="text" class="form-control" name="abstract">');
+        $("#story-url").html('<label for "link">Enter URL:</label><input id="story_link" type="text" class="form-control">');
+        $("#story-text").html('<label for="text">Enter story:</label><textarea id="story_txt" type="textarea" rows="7" class="form-control" name="text"></textarea>');
+        // var quill = new Quill('#editor-container', {
+        //   modules: {
+        //     toolbar: '#toolbar-container'
+        //   },
+        //   placeholder: 'Enter story text',
+        //   theme: 'snow'
+        // });
       });
       $("#poolHallMod").on('shown.bs.modal', function (){
         $('.slick-slider').resize();
